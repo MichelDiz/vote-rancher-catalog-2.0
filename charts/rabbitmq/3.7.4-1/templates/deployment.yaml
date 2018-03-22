@@ -22,15 +22,15 @@ spec:
             - name: RABBITMQ_DEFAULT_USER
               valueFrom:
                 secretKeyRef:
-                  name: "{{ .Values.config.secrets_name }}"
+                  name: {{ .Values.config.secret_name }}
                   key: username
             - name: RABBITMQ_DEFAULT_PASS
               valueFrom:
                 secretKeyRef:
-                  name: "{{ .Values.config.secrets_name }}"
+                  name: {{ .Values.config.secret_name }}
                   key: password
             - name: RABBITMQ_DEFAULT_VHOST
-              value: "{{ .Values.config.vhost }}"
+              value: {{ .Values.config.vhost }}
           ports:
             - containerPort: 5672
             - containerPort: 15672
