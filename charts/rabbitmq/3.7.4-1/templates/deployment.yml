@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: rabbitmq
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: rabbitmq
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        run: rabbitmq
+    spec:
+      containers:
+        - image: rabbitmq:3.7.4-management-alpine
+          name: rabbitmq
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.config.secrets_name }}"
+                  key: username
+            - name: RABBITMQ_DEFAULT_PASS
+                valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.config.secrets_name }}"
+                  key: password
+            - name: RABBITMQ_DEFAULT_VHOST
+                value: "{{ .Values.config.vhost }}"
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672
+          resources: {}
+status: {}
